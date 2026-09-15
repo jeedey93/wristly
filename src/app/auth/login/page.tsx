@@ -87,17 +87,16 @@ export default function LoginPage() {
         </div>
       </div>
 
-      {/* Right panel — logo on black */}
       <div className="hidden lg:flex flex-1 bg-black items-center justify-center relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-zinc-900 to-black" />
         <div className="absolute top-1/4 right-1/4 h-80 w-80 rounded-full border border-white/4" />
         <div className="absolute bottom-1/3 left-1/4 h-[500px] w-[500px] rounded-full border border-white/3" />
-        <div className="relative z-10 flex flex-col items-center px-10">
+        <div className="relative z-10 flex flex-col items-center justify-center w-full px-10">
           <Image
             src="/logo.png"
             alt="Wristly"
-            width={320}
-            height={320}
+            width={280}
+            height={280}
             className="object-contain drop-shadow-2xl"
           />
         </div>
