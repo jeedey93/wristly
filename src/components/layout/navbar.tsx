@@ -1,10 +1,10 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { useState } from 'react'
 import { Menu, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { config } from '@/lib/config'
 
 const navLinks = [
   { href: '/watches', label: 'Browse' },
@@ -20,18 +20,19 @@ export function Navbar() {
       <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
         <div className="flex h-[60px] items-center justify-between">
 
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="flex h-7 w-7 items-center justify-center rounded-md bg-black">
-              <svg viewBox="0 0 20 20" fill="none" className="h-4 w-4 text-white" stroke="currentColor" strokeWidth="1.5">
-                <circle cx="10" cy="10" r="7" />
-                <path d="M10 6.5v4l2.5 1.5" strokeLinecap="round" strokeLinejoin="round" />
-                <path d="M7 2.5h6" strokeLinecap="round" />
-              </svg>
+          {/* Logo — black pill so the PNG looks intentional on white */}
+          <Link href="/" className="flex items-center group">
+            <div className="flex h-9 items-center rounded-lg bg-black px-3 overflow-hidden">
+              <Image
+                src="/logo.png"
+                alt="Wristly"
+                width={88}
+                height={28}
+                className="object-contain"
+                style={{ objectPosition: 'center' }}
+                priority
+              />
             </div>
-            <span className="text-[15px] font-bold tracking-tight text-black">
-              {config.app.name}
-            </span>
           </Link>
 
           {/* Desktop nav */}

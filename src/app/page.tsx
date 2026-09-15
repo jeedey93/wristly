@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { ArrowRight, ShieldCheck, MapPin, Clock, Star } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { WatchCard } from '@/components/watches/watch-card'
@@ -14,6 +15,18 @@ export default function HomePage() {
       <section className="gradient-hero relative min-h-[88vh] flex items-center overflow-hidden">
         <div className="relative z-20 mx-auto max-w-7xl w-full px-5 py-24 sm:px-8 lg:px-10 lg:py-32">
           <div className="max-w-2xl">
+
+            {/* Logo — full mark, prominent in hero */}
+            <div className="mb-10">
+              <Image
+                src="/logo.png"
+                alt="Wristly — Rent Luxury Watches"
+                width={220}
+                height={220}
+                className="object-contain"
+                priority
+              />
+            </div>
 
             {/* Eyebrow */}
             <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/8 px-3.5 py-1.5 mb-8 backdrop-blur-sm">

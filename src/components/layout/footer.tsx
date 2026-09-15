@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { config } from '@/lib/config'
 
 export function Footer() {
@@ -9,15 +10,16 @@ export function Footer() {
 
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
-            <Link href="/" className="inline-flex items-center gap-2.5">
-              <div className="flex h-7 w-7 items-center justify-center rounded-md bg-black">
-                <svg viewBox="0 0 20 20" fill="none" className="h-4 w-4 text-white" stroke="currentColor" strokeWidth="1.5">
-                  <circle cx="10" cy="10" r="7" />
-                  <path d="M10 6.5v4l2.5 1.5" strokeLinecap="round" strokeLinejoin="round" />
-                  <path d="M7 2.5h6" strokeLinecap="round" />
-                </svg>
+            <Link href="/" className="inline-block">
+              <div className="flex items-center rounded-lg bg-black px-3 py-2 w-fit">
+                <Image
+                  src="/logo.png"
+                  alt="Wristly"
+                  width={96}
+                  height={30}
+                  className="object-contain"
+                />
               </div>
-              <span className="text-[15px] font-bold tracking-tight text-black">{config.app.name}</span>
             </Link>
             <p className="mt-4 text-sm text-zinc-500 leading-relaxed max-w-[200px]">
               {config.app.tagline}
