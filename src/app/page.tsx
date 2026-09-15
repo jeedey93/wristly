@@ -12,7 +12,7 @@ export default function HomePage() {
     <>
       {/* ── HERO ──────────────────────────────────────────── */}
       <section className="gradient-hero relative min-h-[88vh] flex items-center overflow-hidden">
-        <div className="relative z-10 mx-auto max-w-7xl w-full px-5 py-24 sm:px-8 lg:px-10 lg:py-32">
+        <div className="relative z-20 mx-auto max-w-7xl w-full px-5 py-24 sm:px-8 lg:px-10 lg:py-32">
           <div className="max-w-2xl">
 
             {/* Eyebrow */}
@@ -68,8 +68,8 @@ export default function HomePage() {
         </div>
 
         {/* Decorative right-side texture */}
-        <div className="absolute right-0 top-0 bottom-0 w-1/2 hidden lg:block pointer-events-none">
-          <div className="absolute inset-0 bg-gradient-to-l from-transparent to-black/50" />
+        <div className="absolute right-0 top-0 bottom-0 w-1/2 hidden lg:block pointer-events-none z-10">
+          <div className="absolute inset-0 bg-gradient-to-l from-transparent to-transparent" />
           <div className="absolute top-1/4 right-16 h-64 w-64 rounded-full border border-white/5" />
           <div className="absolute top-1/3 right-28 h-96 w-96 rounded-full border border-white/4" />
           <div className="absolute bottom-1/4 right-8 h-48 w-48 rounded-full border border-white/5" />

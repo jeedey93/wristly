@@ -70,16 +70,37 @@ body {
 
 /* ─── Hero ───────────────────────────────────────────────── */
 .gradient-hero {
-  background: #000000;
   position: relative;
+  background-color: #000;
+  background-image: url('https://images.unsplash.com/photo-1547996160-81dfa63595aa?w=1800&q=85&auto=format&fit=crop');
+  background-size: cover;
+  background-position: center 40%;
+  background-repeat: no-repeat;
 }
 
+/* Dark overlay so text remains readable over the photo */
+.gradient-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    rgba(0,0,0,0.82) 0%,
+    rgba(0,0,0,0.65) 50%,
+    rgba(0,0,0,0.35) 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Subtle amber glow at bottom */
 .gradient-hero::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse 80% 60% at 50% 100%, rgba(217,119,6,0.12) 0%, transparent 70%);
+  background: radial-gradient(ellipse 70% 40% at 30% 110%, rgba(217,119,6,0.18) 0%, transparent 65%);
   pointer-events: none;
+  z-index: 1;
 }
 
 /* ─── Cards ──────────────────────────────────────────────── */
