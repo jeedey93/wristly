@@ -10,19 +10,19 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 }
 
 const variantClasses: Record<NonNullable<ButtonProps['variant']>, string> = {
-  default: 'bg-stone-900 text-white hover:bg-stone-800 active:bg-stone-950',
-  outline: 'border border-stone-300 bg-transparent text-stone-900 hover:bg-stone-50',
-  ghost: 'bg-transparent text-stone-700 hover:bg-stone-100',
-  secondary: 'bg-stone-100 text-stone-900 hover:bg-stone-200',
+  default:     'bg-black text-white hover:bg-zinc-800 active:bg-zinc-950',
+  outline:     'border border-zinc-300 bg-transparent text-black hover:bg-zinc-50 hover:border-zinc-400',
+  ghost:       'bg-transparent text-zinc-600 hover:bg-zinc-100 hover:text-black',
+  secondary:   'bg-zinc-100 text-black hover:bg-zinc-200',
   destructive: 'bg-red-600 text-white hover:bg-red-700',
-  accent: 'bg-amber-700 text-white hover:bg-amber-800',
+  accent:      'bg-amber-600 text-white hover:bg-amber-700 active:bg-amber-800',
 }
 
 const sizeClasses: Record<NonNullable<ButtonProps['size']>, string> = {
-  sm: 'h-8 px-3 text-xs rounded-md',
-  md: 'h-10 px-4 text-sm rounded-lg',
-  lg: 'h-12 px-6 text-base rounded-lg',
-  xl: 'h-14 px-8 text-base rounded-xl',
+  sm:  'h-8 px-3 text-xs rounded-md gap-1.5',
+  md:  'h-10 px-4 text-sm rounded-lg gap-2',
+  lg:  'h-11 px-6 text-sm rounded-lg gap-2',
+  xl:  'h-13 px-8 text-base rounded-xl gap-2',
 }
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
@@ -33,7 +33,9 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         disabled={disabled || loading}
         className={cn(
-          'inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-stone-950 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none',
+          'inline-flex items-center justify-center font-medium tracking-tight transition-all duration-150',
+          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2',
+          'disabled:opacity-40 disabled:pointer-events-none',
           variantClasses[variant],
           sizeClasses[size],
           className
@@ -41,7 +43,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {...props}
       >
         {loading && (
-          <svg className="mr-2 h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">
+          <svg className="h-4 w-4 animate-spin shrink-0" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
           </svg>

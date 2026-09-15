@@ -10,83 +10,79 @@ interface WatchCardProps {
   watch: Watch
 }
 
-const STATUS_LABELS: Record<Watch['status'], { label: string; variant: 'success' | 'secondary' | 'warning' | 'outline' }> = {
-  active: { label: 'Available', variant: 'success' },
-  rented: { label: 'Rented', variant: 'secondary' },
-  pending_review: { label: 'Under Review', variant: 'warning' },
-  inactive: { label: 'Inactive', variant: 'outline' },
-}
-
 export function WatchCard({ watch }: WatchCardProps) {
-  const statusInfo = STATUS_LABELS[watch.status]
   const isAvailable = watch.status === 'active'
 
   return (
     <Link
       href={`/watches/${watch.id}`}
-      className={`group block rounded-xl border border-stone-200 bg-white overflow-hidden watch-card ${
-        !isAvailable ? 'opacity-60' : ''
+      className={`group block bg-white rounded-2xl border border-zinc-200 overflow-hidden watch-card ${
+        !isAvailable ? 'opacity-50' : ''
       }`}
     >
       {/* Photo */}
-      <div className="relative aspect-watch overflow-hidden bg-stone-100">
+      <div className="relative aspect-watch overflow-hidden bg-zinc-100">
         {watch.photos[0] ? (
           <Image
             src={watch.photos[0]}
             alt={`${watch.brand} ${watch.model}`}
             fill
-            className="object-cover transition-transform duration-300 group-hover:scale-105"
+            className="object-cover img-zoom"
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           />
         ) : (
-          <div className="flex h-full items-center justify-center bg-stone-100">
-            <span className="text-4xl">⌚</span>
-          </div>
+          <div className="flex h-full items-center justify-center text-5xl text-zinc-300">⌚</div>
         )}
 
-        {/* Status badge overlay */}
-        <div className="absolute top-3 left-3">
-          <Badge variant={statusInfo.variant}>{statusInfo.label}</Badge>
-        </div>
-
-        {/* Auth badge */}
-        {watch.isAuthenticated && (
-          <div className="absolute top-3 right-3">
-            <span className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium bg-amber-700 text-white">
-              <ShieldCheck size={10} />
+        {/* Overlay badges */}
+        <div className="absolute inset-x-0 top-0 flex items-start justify-between p-3">
+          {!isAvailable && (
+            <Badge variant="secondary" className="text-[11px]">Rented</Badge>
+          )}
+          {isAvailable && <span />}
+          {watch.isAuthenticated && (
+            <span className="inline-flex items-center gap-1 rounded-full bg-black/80 px-2 py-0.5 text-[10px] font-medium text-white backdrop-blur-sm">
+              <ShieldCheck size={9} />
               Verified
             </span>
-          </div>
-        )}
+          )}
+        </div>
       </div>
 
       {/* Content */}
       <div className="p-4">
-        <div className="flex items-start justify-between gap-2">
-          <div>
-            <p className="text-xs font-medium text-stone-500 uppercase tracking-wide">{watch.brand}</p>
-            <h3 className="mt-0.5 text-sm font-semibold text-stone-900 leading-tight">{watch.model}</h3>
+        {/* Brand + price */}
+        <div className="flex items-start justify-between gap-3">
+          <div className="min-w-0">
+            <p className="text-label text-zinc-400 truncate">{watch.brand}</p>
+            <h3 className="mt-0.5 text-[15px] font-semibold text-black leading-tight truncate">
+              {watch.model}
+            </h3>
           </div>
           <div className="text-right shrink-0">
-            <p className="text-sm font-bold text-stone-900">{formatCAD(watch.rentalPrice30d)}</p>
-            <p className="text-xs text-stone-500">/ 30 days</p>
+            <p className="text-[15px] font-bold text-black tabular-nums">{formatCAD(watch.rentalPrice30d)}</p>
+            <p className="text-[11px] text-zinc-400">/ 30 days</p>
           </div>
         </div>
 
+        {/* Meta row */}
         <div className="mt-3 flex items-center justify-between">
-          <div className="flex items-center gap-1 text-xs text-stone-500">
+          <span className="inline-flex items-center gap-1 text-[12px] text-zinc-400">
             <MapPin size={11} />
-            <span>{watch.pickupArea}</span>
-          </div>
+            {watch.pickupArea}
+          </span>
           <StarRating rating={watch.watchRating} count={watch.watchReviews} />
         </div>
 
-        <div className="mt-3 border-t border-stone-100 pt-3 flex items-center justify-between">
-          <p className="text-xs text-stone-500">
-            Deposit: <span className="font-medium text-stone-700">{formatCAD(watch.depositAmount)}</span>
+        {/* Footer row */}
+        <div className="mt-3 pt-3 border-t border-zinc-100 flex items-center justify-between">
+          <p className="text-[12px] text-zinc-400">
+            Deposit{' '}
+            <span className="font-medium text-zinc-600">{formatCAD(watch.depositAmount)}</span>
           </p>
-          <p className="text-xs text-stone-500">
-            Est. value: <span className="font-medium text-stone-700">{formatCAD(watch.estimatedValue)}</span>
+          <p className="text-[12px] text-zinc-400">
+            Value{' '}
+            <span className="font-medium text-zinc-600">{formatCAD(watch.estimatedValue)}</span>
           </p>
         </div>
       </div>

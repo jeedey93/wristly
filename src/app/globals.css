@@ -1,87 +1,130 @@
 @import "tailwindcss";
 
+/* ─── Design tokens ─────────────────────────────────────── */
 :root {
-  --background: #fafaf9;
-  --foreground: #0c0a09;
-  --card: #ffffff;
-  --card-foreground: #0c0a09;
-  --border: #e7e5e4;
-  --muted: #f5f5f4;
-  --muted-foreground: #78716c;
-  --primary: #0c0a09;
-  --primary-foreground: #fafaf9;
-  --secondary: #f5f5f4;
-  --secondary-foreground: #0c0a09;
-  --accent: #b45309;
-  --accent-foreground: #ffffff;
-  --destructive: #dc2626;
-  --radius: 0.5rem;
+  --bg:           #ffffff;
+  --bg-subtle:    #f8f8f8;
+  --bg-muted:     #f2f2f2;
+  --border:       #e5e5e5;
+  --border-heavy: #d0d0d0;
+
+  --text:         #000000;
+  --text-2:       #3a3a3a;
+  --text-3:       #6b6b6b;
+  --text-4:       #9b9b9b;
+
+  --accent:       #d97706;
+  --accent-light: #fef3c7;
+  --accent-dark:  #b45309;
+
+  --surface:      #ffffff;
+  --surface-dark: #0a0a0a;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-background: var(--bg);
+  --color-foreground: var(--text);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-* {
-  box-sizing: border-box;
-}
+/* ─── Base ───────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-feature-settings: "rlig" 1, "calt" 1;
+  background: var(--bg);
+  color: var(--text);
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "rlig" 1, "calt" 1, "ss01" 1;
 }
 
-/* Smooth scrolling */
-html {
-  scroll-behavior: smooth;
-}
-
-/* Premium typography scale */
+/* ─── Typography ─────────────────────────────────────────── */
 .text-display {
-  font-size: clamp(2.5rem, 6vw, 4.5rem);
-  line-height: 1.05;
-  letter-spacing: -0.03em;
+  font-size: clamp(2.75rem, 6.5vw, 5rem);
+  line-height: 1.02;
+  letter-spacing: -0.04em;
   font-weight: 700;
 }
 
 .text-heading {
-  font-size: clamp(1.5rem, 3vw, 2.25rem);
-  line-height: 1.2;
-  letter-spacing: -0.02em;
+  font-size: clamp(1.625rem, 3.5vw, 2.5rem);
+  line-height: 1.15;
+  letter-spacing: -0.025em;
   font-weight: 600;
 }
 
-/* Watch card hover effect */
-.watch-card {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+.text-label {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
 }
 
-.watch-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
-}
-
-/* Photo aspect ratio container */
-.aspect-watch {
-  aspect-ratio: 4 / 3;
-}
-
-/* Gradient overlays */
+/* ─── Hero ───────────────────────────────────────────────── */
 .gradient-hero {
-  background: linear-gradient(
-    135deg,
-    #0c0a09 0%,
-    #1c1917 40%,
-    #292524 100%
-  );
+  background: #000000;
+  position: relative;
 }
 
-/* Trust badge */
-.auth-badge {
-  background: linear-gradient(135deg, #b45309, #d97706);
+.gradient-hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 50% 100%, rgba(217,119,6,0.12) 0%, transparent 70%);
+  pointer-events: none;
 }
+
+/* ─── Cards ──────────────────────────────────────────────── */
+.watch-card {
+  transition: box-shadow 0.25s ease, transform 0.25s ease;
+}
+.watch-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.10), 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.aspect-watch { aspect-ratio: 4 / 3; }
+
+/* ─── Divider line accent ────────────────────────────────── */
+.line-accent {
+  display: block;
+  width: 2.5rem;
+  height: 2px;
+  background: var(--accent);
+  border-radius: 2px;
+}
+
+/* ─── Section separator ──────────────────────────────────── */
+.section-sep {
+  border: none;
+  border-top: 1px solid var(--border);
+}
+
+/* ─── Stat number ────────────────────────────────────────── */
+.stat-number {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+/* ─── Image zoom ─────────────────────────────────────────── */
+.img-zoom {
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.group:hover .img-zoom {
+  transform: scale(1.04);
+}
+
+/* ─── Scrollbar ──────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-muted); }
+::-webkit-scrollbar-thumb { background: var(--border-heavy); border-radius: 999px; }
