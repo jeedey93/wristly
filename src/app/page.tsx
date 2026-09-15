@@ -16,16 +16,17 @@ export default function HomePage() {
         <div className="relative z-20 mx-auto max-w-7xl w-full px-5 py-24 sm:px-8 lg:px-10 lg:py-32">
           <div className="max-w-2xl">
 
-            {/* Logo — full mark, prominent in hero */}
+            {/* Logo — dark hero, PNG black bg is invisible against dark overlay */}
             <div className="mb-10">
-              <Image
-                src="/logo.png"
-                alt="Wristly — Rent Luxury Watches"
-                width={220}
-                height={220}
-                className="object-contain"
-                priority
-              />
+              <div className="relative h-[160px] w-[160px]">
+                <Image
+                  src="/logo.png"
+                  alt="Wristly — Rent Luxury Watches"
+                  fill
+                  className="object-contain drop-shadow-2xl"
+                  priority
+                />
+              </div>
             </div>
 
             {/* Eyebrow */}

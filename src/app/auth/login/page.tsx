@@ -27,8 +27,15 @@ export default function LoginPage() {
         <div className="w-full max-w-[360px]">
           <div className="mb-8">
             <Link href="/" className="inline-block mb-8">
-              <div className="flex items-center rounded-lg bg-black px-3 py-2 w-fit">
-                <Image src="/logo.png" alt="Wristly" width={96} height={30} className="object-contain" priority />
+              <div className="relative h-10 w-[120px] overflow-hidden">
+                <Image
+                  src="/logo.png"
+                  alt="Wristly"
+                  fill
+                  className="object-contain object-left"
+                  style={{ mixBlendMode: 'multiply' }}
+                  priority
+                />
               </div>
             </Link>
             <h1 className="text-2xl font-bold tracking-tight text-black">Welcome back</h1>

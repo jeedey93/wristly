@@ -20,16 +20,15 @@ export function Navbar() {
       <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
         <div className="flex h-[60px] items-center justify-between">
 
-          {/* Logo — black pill so the PNG looks intentional on white */}
-          <Link href="/" className="flex items-center group">
-            <div className="flex h-9 items-center rounded-lg bg-black px-3 overflow-hidden">
+          {/* Logo — multiply blend removes black bg on white navbar */}
+          <Link href="/" className="flex items-center group -ml-1">
+            <div className="relative h-10 w-[120px] overflow-hidden">
               <Image
                 src="/logo.png"
                 alt="Wristly"
-                width={88}
-                height={28}
-                className="object-contain"
-                style={{ objectPosition: 'center' }}
+                fill
+                className="object-contain object-left"
+                style={{ mixBlendMode: 'multiply' }}
                 priority
               />
             </div>
