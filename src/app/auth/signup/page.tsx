@@ -23,15 +23,9 @@ export default function SignupPage() {
       <div className="flex flex-1 items-start justify-center px-5 py-12 sm:px-10 overflow-y-auto">
         <div className="w-full max-w-[400px]">
           <Link href="/" className="inline-block mb-8">
-            <Image
-              src="/logo.png"
-              alt="Wristly"
-              width={72}
-              height={72}
-              className="object-contain"
-              style={{ mixBlendMode: 'multiply' }}
-              priority
-            />
+            <span className="text-[20px] font-bold tracking-[0.12em] uppercase text-black">
+              Wristly
+            </span>
           </Link>
 
           <div className="mb-7">

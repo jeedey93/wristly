@@ -1,7 +1,6 @@
 'use client'
 
 import Link from 'next/link'
-import Image from 'next/image'
 import { useState } from 'react'
 import { Menu, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -20,17 +19,11 @@ export function Navbar() {
       <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
         <div className="flex h-[60px] items-center justify-between">
 
-          {/* Logo */}
-          <Link href="/" className="flex items-center">
-            <Image
-              src="/logo.png"
-              alt="Wristly"
-              width={52}
-              height={52}
-              className="object-contain"
-              style={{ mixBlendMode: 'multiply' }}
-              priority
-            />
+          {/* Wordmark */}
+          <Link href="/" className="flex items-center gap-2">
+            <span className="text-[18px] font-bold tracking-[0.12em] uppercase text-black">
+              Wristly
+            </span>
           </Link>
 
           {/* Desktop nav */}

@@ -27,15 +27,9 @@ export default function LoginPage() {
         <div className="w-full max-w-[360px]">
           <div className="mb-8">
             <Link href="/" className="inline-block mb-8">
-              <Image
-                src="/logo.png"
-                alt="Wristly"
-                width={72}
-                height={72}
-                className="object-contain"
-                style={{ mixBlendMode: 'multiply' }}
-                priority
-              />
+              <span className="text-[20px] font-bold tracking-[0.12em] uppercase text-black">
+                Wristly
+              </span>
             </Link>
             <h1 className="text-2xl font-bold tracking-tight text-black">Welcome back</h1>
             <p className="mt-1 text-sm text-zinc-500">Sign in to your account</p>
