@@ -66,12 +66,12 @@ const PLACEHOLDER_PHOTOS = {
     'https://images.unsplash.com/photo-1614164185128-e4ec99c436d7?w=800&q=80',
   ],
   tudor: [
-    'https://images.unsplash.com/photo-1619946794135-5bc917a27793?w=800&q=80',
-    'https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?w=800&q=80',
+    'https://images.unsplash.com/photo-1647174317920-a9c6780f825b?w=800&q=80',
+    'https://images.unsplash.com/photo-1647174317920-a9c6780f825b?w=800&q=80',
   ],
   cartier: [
-    'https://images.unsplash.com/photo-1548690312-e3b507d8c110?w=800&q=80',
-    'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=800&q=80',
+    'https://images.unsplash.com/photo-1687040481503-3595ef7b5672?w=800&q=80',
+    'https://images.unsplash.com/photo-1687040481503-3595ef7b5672?w=800&q=80',
   ],
   grandseiko: [
     'https://images.unsplash.com/photo-1622434641406-a158123450f9?w=800&q=80',
