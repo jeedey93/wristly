@@ -16,6 +16,18 @@ export default function HomePage() {
         <div className="relative z-20 mx-auto max-w-7xl w-full px-5 py-24 sm:px-8 lg:px-10 lg:py-32">
           <div className="max-w-2xl">
 
+            {/* Logo — large and prominent on first load */}
+            <div className="mb-8">
+              <Image
+                src="/logo.png"
+                alt="Wristly"
+                width={200}
+                height={200}
+                className="object-contain"
+                priority
+              />
+            </div>
+
             {/* Eyebrow */}
             <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/8 px-3.5 py-1.5 mb-8 backdrop-blur-sm">
               <span className="h-1.5 w-1.5 rounded-full bg-amber-400 animate-pulse" />
