@@ -20,18 +20,17 @@ export function Navbar() {
       <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
         <div className="flex h-[60px] items-center justify-between">
 
-          {/* Logo — multiply blend removes black bg on white navbar */}
-          <Link href="/" className="flex items-center group -ml-1">
-            <div className="relative h-10 w-[120px] overflow-hidden">
-              <Image
-                src="/logo.png"
-                alt="Wristly"
-                fill
-                className="object-contain object-left"
-                style={{ mixBlendMode: 'multiply' }}
-                priority
-              />
-            </div>
+          {/* Logo */}
+          <Link href="/" className="flex items-center">
+            <Image
+              src="/logo.png"
+              alt="Wristly"
+              width={52}
+              height={52}
+              className="object-contain"
+              style={{ mixBlendMode: 'multiply' }}
+              priority
+            />
           </Link>
 
           {/* Desktop nav */}

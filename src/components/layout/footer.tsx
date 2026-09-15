@@ -11,15 +11,14 @@ export function Footer() {
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
             <Link href="/" className="inline-block">
-              <div className="relative h-10 w-[120px] overflow-hidden">
-                <Image
-                  src="/logo.png"
-                  alt="Wristly"
-                  fill
-                  className="object-contain object-left"
-                  style={{ mixBlendMode: 'multiply' }}
-                />
-              </div>
+              <Image
+                src="/logo.png"
+                alt="Wristly"
+                width={64}
+                height={64}
+                className="object-contain"
+                style={{ mixBlendMode: 'multiply' }}
+              />
             </Link>
             <p className="mt-4 text-sm text-zinc-500 leading-relaxed max-w-[200px]">
               {config.app.tagline}
