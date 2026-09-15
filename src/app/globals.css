@@ -1,8 +1,21 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #fafaf9;
+  --foreground: #0c0a09;
+  --card: #ffffff;
+  --card-foreground: #0c0a09;
+  --border: #e7e5e4;
+  --muted: #f5f5f4;
+  --muted-foreground: #78716c;
+  --primary: #0c0a09;
+  --primary-foreground: #fafaf9;
+  --secondary: #f5f5f4;
+  --secondary-foreground: #0c0a09;
+  --accent: #b45309;
+  --accent-foreground: #ffffff;
+  --destructive: #dc2626;
+  --radius: 0.5rem;
 }
 
 @theme inline {
@@ -12,15 +25,63 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-feature-settings: "rlig" 1, "calt" 1;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Premium typography scale */
+.text-display {
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  font-weight: 700;
+}
+
+.text-heading {
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+}
+
+/* Watch card hover effect */
+.watch-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.watch-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+}
+
+/* Photo aspect ratio container */
+.aspect-watch {
+  aspect-ratio: 4 / 3;
+}
+
+/* Gradient overlays */
+.gradient-hero {
+  background: linear-gradient(
+    135deg,
+    #0c0a09 0%,
+    #1c1917 40%,
+    #292524 100%
+  );
+}
+
+/* Trust badge */
+.auth-badge {
+  background: linear-gradient(135deg, #b45309, #d97706);
 }
