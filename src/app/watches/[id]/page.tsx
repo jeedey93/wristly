@@ -119,14 +119,22 @@ export default async function WatchDetailPage({ params }: Props) {
             {/* Owner */}
             <div className="rounded-2xl border border-zinc-200 p-6">
               <h2 className="text-base font-semibold text-black mb-4">Listed by</h2>
-              <div className="flex items-center gap-4">
-                <div className="h-11 w-11 rounded-full bg-black flex items-center justify-center text-white font-bold">
-                  {watch.ownerName[0]}
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <div className="h-11 w-11 rounded-full bg-black flex items-center justify-center text-white font-bold">
+                    {watch.ownerName[0]}
+                  </div>
+                  <div>
+                    <p className="font-semibold text-black text-sm">{watch.ownerName}</p>
+                    <StarRating rating={watch.ownerRating} count={watch.ownerReviews} size="md" />
+                  </div>
                 </div>
-                <div>
-                  <p className="font-semibold text-black text-sm">{watch.ownerName}</p>
-                  <StarRating rating={watch.ownerRating} count={watch.ownerReviews} size="md" />
-                </div>
+                <Link
+                  href={`/profile/${watch.ownerId}`}
+                  className="text-[13px] font-medium text-black underline underline-offset-2 hover:text-zinc-600"
+                >
+                  View profile
+                </Link>
               </div>
               <p className="mt-4 text-[13px] text-zinc-400 leading-relaxed">
                 Exact pickup address is shared only after booking is confirmed.
