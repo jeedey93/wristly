@@ -81,6 +81,12 @@ export function Navbar() {
                     My collection
                   </Link>
                   <Link
+                    href="/dashboard/bookings"
+                    className="text-[13px] font-medium text-zinc-500 hover:text-black transition-colors"
+                  >
+                    My rentals
+                  </Link>
+                  <Link
                     href={`/profile/${user.id}`}
                     className="flex items-center gap-1.5 text-[13px] font-medium text-zinc-500 hover:text-black transition-colors"
                   >
@@ -136,6 +142,11 @@ export function Navbar() {
                   <Button variant="outline" size="md" asChild>
                     <Link href="/owner/watches" onClick={() => setOpen(false)}>
                       My collection
+                    </Link>
+                  </Button>
+                  <Button variant="outline" size="md" asChild>
+                    <Link href="/dashboard/bookings" onClick={() => setOpen(false)}>
+                      My rentals
                     </Link>
                   </Button>
                   <Button variant="outline" size="md" asChild>
