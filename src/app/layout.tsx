@@ -15,6 +15,23 @@ export const metadata: Metadata = {
   },
   description: `${config.app.name} is a peer-to-peer luxury watch rental marketplace in the Greater Montreal area. Rent a luxury watch from someone near you.`,
   keywords: ['luxury watch rental', 'Montreal', 'Rolex rental', 'Omega rental', 'watch marketplace'],
+  openGraph: {
+    type: 'website',
+    siteName: config.app.name,
+    title: `${config.app.name} — ${config.app.tagline}`,
+    description: 'Rent a luxury watch from someone near you. Rolex, Omega, Cartier and more — Greater Montreal.',
+    images: [{ url: '/opengraph-image.png', width: 1200, height: 630, alt: 'Wristly' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: `${config.app.name} — ${config.app.tagline}`,
+    description: 'Rent a luxury watch from someone near you. Rolex, Omega, Cartier and more — Greater Montreal.',
+    images: ['/opengraph-image.png'],
+  },
+  icons: {
+    icon: '/icon.png',
+    apple: '/icon.png',
+  },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
