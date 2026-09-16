@@ -3,18 +3,68 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { createClient } from '@/lib/supabase/client'
 
 export default function SignupPage() {
+  const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [role, setRole] = useState<'renter' | 'owner' | 'both'>('renter')
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
+  const [email, setEmail] = useState('')
+  const [phone, setPhone] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
+  const [success, setSuccess] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
-    await new Promise((r) => setTimeout(r, 1000))
+    setError('')
+
+    const supabase = createClient()
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          first_name: firstName,
+          last_name: lastName,
+          phone: phone || null,
+          role,
+        },
+      },
+    })
+
+    if (error) {
+      setError(error.message)
+      setLoading(false)
+      return
+    }
+
+    setSuccess(true)
     setLoading(false)
+  }
+
+  if (success) {
+    return (
+      <div className="flex min-h-[calc(100vh-60px)] items-center justify-center bg-white px-5">
+        <div className="max-w-sm text-center">
+          <div className="mb-4 text-4xl">✉️</div>
+          <h1 className="text-xl font-bold text-black mb-2">Check your email</h1>
+          <p className="text-sm text-zinc-500 leading-relaxed">
+            We sent a confirmation link to <span className="font-medium text-black">{email}</span>.
+            Click it to activate your account.
+          </p>
+          <Link href="/auth/login" className="mt-6 inline-block text-sm font-semibold text-black underline underline-offset-2">
+            Back to sign in
+          </Link>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -62,12 +112,18 @@ export default function SignupPage() {
             </div>
 
             <div className="grid grid-cols-2 gap-3">
-              <Input label="First name" placeholder="Alex" required />
-              <Input label="Last name" placeholder="Martin" required />
+              <Input label="First name" placeholder="Alex" value={firstName} onChange={(e) => setFirstName(e.target.value)} required />
+              <Input label="Last name" placeholder="Martin" value={lastName} onChange={(e) => setLastName(e.target.value)} required />
             </div>
-            <Input label="Email" type="email" placeholder="you@example.com" required />
-            <Input label="Phone (optional)" type="tel" placeholder="+1 (514) 555-0000" />
-            <Input label="Password" type="password" placeholder="••••••••" required />
+            <Input label="Email" type="email" placeholder="you@example.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
+            <Input label="Phone (optional)" type="tel" placeholder="+1 (514) 555-0000" value={phone} onChange={(e) => setPhone(e.target.value)} />
+            <Input label="Password" type="password" placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} required />
+
+            {error && (
+              <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2">
+                {error}
+              </p>
+            )}
 
             <div className="flex items-start gap-2 pt-1">
               <input type="checkbox" id="terms" required className="mt-0.5 h-4 w-4 rounded border-zinc-300 accent-black" />
