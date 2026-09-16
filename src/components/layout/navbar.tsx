@@ -81,7 +81,7 @@ export function Navbar() {
                     My collection
                   </Link>
                   <Link
-                    href="/dashboard/bookings"
+                    href={`/profile/${user.id}`}
                     className="flex items-center gap-1.5 text-[13px] font-medium text-zinc-500 hover:text-black transition-colors"
                   >
                     <User size={14} />
@@ -139,7 +139,7 @@ export function Navbar() {
                     </Link>
                   </Button>
                   <Button variant="outline" size="md" asChild>
-                    <Link href="/dashboard/bookings" onClick={() => setOpen(false)}>
+                    <Link href={`/profile/${user.id}`} onClick={() => setOpen(false)}>
                       My account
                     </Link>
                   </Button>
