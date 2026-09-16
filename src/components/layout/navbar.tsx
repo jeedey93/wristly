@@ -1,9 +1,12 @@
 'use client'
 
 import Link from 'next/link'
-import { useState } from 'react'
-import { Menu, X } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
+import { Menu, X, User, LogOut } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { createClient } from '@/lib/supabase/client'
+import type { User as SupabaseUser } from '@supabase/supabase-js'
 
 const navLinks = [
   { href: '/watches', label: 'Browse' },
@@ -12,7 +15,34 @@ const navLinks = [
 ]
 
 export function Navbar() {
+  const router = useRouter()
   const [open, setOpen] = useState(false)
+  const [user, setUser] = useState<SupabaseUser | null>(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const supabase = createClient()
+
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      setUser(user)
+      setLoading(false)
+    })
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null)
+    })
+
+    return () => subscription.unsubscribe()
+  }, [])
+
+  const handleSignOut = async () => {
+    const supabase = createClient()
+    await supabase.auth.signOut()
+    router.push('/')
+    router.refresh()
+  }
+
+  const firstName = user?.user_metadata?.first_name as string | undefined
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-zinc-200 bg-white/95 backdrop-blur-sm">
@@ -41,12 +71,32 @@ export function Navbar() {
 
           {/* Desktop auth */}
           <div className="hidden items-center gap-2.5 md:flex">
-            <Button variant="ghost" size="sm" asChild>
-              <Link href="/auth/login">Sign in</Link>
-            </Button>
-            <Button size="sm" asChild>
-              <Link href="/auth/signup">Get started</Link>
-            </Button>
+            {!loading && (
+              user ? (
+                <>
+                  <Link
+                    href="/dashboard/bookings"
+                    className="flex items-center gap-1.5 text-[13px] font-medium text-zinc-500 hover:text-black transition-colors"
+                  >
+                    <User size={14} />
+                    {firstName ?? 'Account'}
+                  </Link>
+                  <Button variant="ghost" size="sm" onClick={handleSignOut}>
+                    <LogOut size={13} />
+                    Sign out
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button variant="ghost" size="sm" asChild>
+                    <Link href="/auth/login">Sign in</Link>
+                  </Button>
+                  <Button size="sm" asChild>
+                    <Link href="/auth/signup">Get started</Link>
+                  </Button>
+                </>
+              )
+            )}
           </div>
 
           {/* Mobile toggle */}
@@ -75,12 +125,27 @@ export function Navbar() {
               </Link>
             ))}
             <div className="mt-3 flex flex-col gap-2 border-t border-zinc-100 pt-3">
-              <Button variant="outline" size="md" asChild>
-                <Link href="/auth/login" onClick={() => setOpen(false)}>Sign in</Link>
-              </Button>
-              <Button size="md" asChild>
-                <Link href="/auth/signup" onClick={() => setOpen(false)}>Get started</Link>
-              </Button>
+              {user ? (
+                <>
+                  <Button variant="outline" size="md" asChild>
+                    <Link href="/dashboard/bookings" onClick={() => setOpen(false)}>
+                      My account
+                    </Link>
+                  </Button>
+                  <Button size="md" onClick={() => { handleSignOut(); setOpen(false) }}>
+                    Sign out
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button variant="outline" size="md" asChild>
+                    <Link href="/auth/login" onClick={() => setOpen(false)}>Sign in</Link>
+                  </Button>
+                  <Button size="md" asChild>
+                    <Link href="/auth/signup" onClick={() => setOpen(false)}>Get started</Link>
+                  </Button>
+                </>
+              )}
             </div>
           </nav>
         </div>
