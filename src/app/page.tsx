@@ -2,12 +2,19 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { ArrowRight, ShieldCheck, MapPin, Clock, Star } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { WatchCard } from '@/components/watches/watch-card'
-import { SEED_WATCHES } from '@/lib/seed-data'
+import { createClient } from '@/lib/supabase/server'
 import { config, formatCAD } from '@/lib/config'
 
-export default function HomePage() {
-  const featuredWatches = SEED_WATCHES.filter((w) => w.status === 'active').slice(0, 3)
+export default async function HomePage() {
+  const supabase = await createClient()
+  const { data: featuredWatches } = await supabase
+    .from('watches')
+    .select('*')
+    .eq('status', 'active')
+    .order('created_at', { ascending: false })
+    .limit(3)
+
+  const watches = featuredWatches ?? []
 
   return (
     <>
@@ -127,9 +134,38 @@ export default function HomePage() {
             </Button>
           </div>
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {featuredWatches.map((watch) => (
-              <WatchCard key={watch.id} watch={watch} />
-            ))}
+            {watches.map((watch) => {
+              const photos = watch.photos as string[] | null
+              return (
+                <Link
+                  key={watch.id}
+                  href={`/watches/${watch.id}`}
+                  className="group block bg-white rounded-2xl border border-zinc-200 overflow-hidden hover:border-zinc-300 hover:shadow-sm transition-all"
+                >
+                  <div className="relative aspect-[4/3] overflow-hidden bg-zinc-100">
+                    {photos?.[0] ? (
+                      <Image
+                        src={photos[0]}
+                        alt={`${watch.brand} ${watch.model}`}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-500"
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      />
+                    ) : (
+                      <div className="flex h-full items-center justify-center text-5xl text-zinc-300">⌚</div>
+                    )}
+                  </div>
+                  <div className="p-4">
+                    <p className="text-[11px] font-semibold tracking-widest uppercase text-zinc-400">{watch.brand}</p>
+                    <h3 className="mt-0.5 text-[15px] font-semibold text-black">{watch.model}</h3>
+                    <div className="mt-2 flex items-center justify-between">
+                      <span className="text-[15px] font-bold text-black">{formatCAD(watch.rental_price_30d)}<span className="text-xs font-normal text-zinc-400"> / 30 days</span></span>
+                      <span className="text-[12px] text-zinc-400">{watch.pickup_area}</span>
+                    </div>
+                  </div>
+                </Link>
+              )
+            })}
           </div>
           <div className="mt-8 sm:hidden">
             <Button variant="outline" size="md" className="w-full" asChild>

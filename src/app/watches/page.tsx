@@ -1,39 +1,55 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { Search, SlidersHorizontal, X } from 'lucide-react'
-import { WatchCard } from '@/components/watches/watch-card'
+import Link from 'next/link'
+import Image from 'next/image'
+import { MapPin, ShieldCheck, Star } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
-import { SEED_WATCHES } from '@/lib/seed-data'
-import { config } from '@/lib/config'
+import { createClient } from '@/lib/supabase/client'
+import { config, formatCAD } from '@/lib/config'
 
 const BRANDS = ['All', ...config.watch.brands.slice(0, 10)]
 const AREAS = ['All areas', ...config.locations.areas]
 
 export default function WatchesPage() {
+  const [watches, setWatches] = useState<Record<string, unknown>[]>([])
+  const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState('')
   const [selectedBrand, setSelectedBrand] = useState('All')
   const [selectedArea, setSelectedArea] = useState('All areas')
   const [maxPrice, setMaxPrice] = useState('')
   const [showFilters, setShowFilters] = useState(false)
 
+  useEffect(() => {
+    const supabase = createClient()
+    supabase
+      .from('watches')
+      .select('*')
+      .in('status', ['active', 'rented'])
+      .order('created_at', { ascending: false })
+      .then(({ data }) => {
+        setWatches(data ?? [])
+        setLoading(false)
+      })
+  }, [])
+
   const filtered = useMemo(() => {
-    return SEED_WATCHES.filter((w) => {
+    return watches.filter((w) => {
       if (selectedBrand !== 'All' && w.brand !== selectedBrand) return false
-      if (selectedArea !== 'All areas' && w.pickupArea !== selectedArea) return false
-      if (maxPrice && w.rentalPrice30d > parseFloat(maxPrice)) return false
+      if (selectedArea !== 'All areas' && w.pickup_area !== selectedArea) return false
+      if (maxPrice && (w.rental_price_30d as number) > parseFloat(maxPrice)) return false
       if (search) {
         const q = search.toLowerCase()
         if (
-          !w.brand.toLowerCase().includes(q) &&
-          !w.model.toLowerCase().includes(q) &&
-          !w.pickupArea.toLowerCase().includes(q)
+          !(w.brand as string).toLowerCase().includes(q) &&
+          !(w.model as string).toLowerCase().includes(q) &&
+          !(w.pickup_area as string).toLowerCase().includes(q)
         ) return false
       }
       return true
     })
-  }, [search, selectedBrand, selectedArea, maxPrice])
+  }, [watches, search, selectedBrand, selectedArea, maxPrice])
 
   const activeFilters = [
     selectedBrand !== 'All' && selectedBrand,
@@ -50,7 +66,6 @@ export default function WatchesPage() {
 
   return (
     <div className="min-h-screen bg-white">
-
       {/* Page header */}
       <div className="border-b border-zinc-200 bg-white">
         <div className="mx-auto max-w-7xl px-5 py-8 sm:px-8 lg:px-10">
@@ -58,7 +73,7 @@ export default function WatchesPage() {
             <div>
               <h1 className="text-2xl font-bold tracking-tight text-black">Browse Watches</h1>
               <p className="mt-1 text-[14px] text-zinc-500">
-                {filtered.length} watch{filtered.length !== 1 ? 'es' : ''} available · Greater Montreal
+                {loading ? 'Loading…' : `${filtered.length} watch${filtered.length !== 1 ? 'es' : ''} available · Greater Montreal`}
               </p>
             </div>
           </div>
@@ -93,7 +108,7 @@ export default function WatchesPage() {
           {showFilters && (
             <div className="mt-3 rounded-xl border border-zinc-200 bg-zinc-50 p-5 grid gap-5 sm:grid-cols-3">
               <div>
-                <p className="text-label text-zinc-400 mb-3">Brand</p>
+                <p className="text-[11px] font-semibold tracking-widest uppercase text-zinc-400 mb-3">Brand</p>
                 <div className="flex flex-wrap gap-1.5">
                   {BRANDS.map((brand) => (
                     <button
@@ -111,7 +126,7 @@ export default function WatchesPage() {
                 </div>
               </div>
               <div>
-                <p className="text-label text-zinc-400 mb-3">Neighborhood</p>
+                <p className="text-[11px] font-semibold tracking-widest uppercase text-zinc-400 mb-3">Neighborhood</p>
                 <select
                   value={selectedArea}
                   onChange={(e) => setSelectedArea(e.target.value)}
@@ -121,7 +136,7 @@ export default function WatchesPage() {
                 </select>
               </div>
               <div>
-                <p className="text-label text-zinc-400 mb-3">Max price / 30 days</p>
+                <p className="text-[11px] font-semibold tracking-widest uppercase text-zinc-400 mb-3">Max price / 30 days</p>
                 <input
                   type="number"
                   value={maxPrice}
@@ -137,10 +152,7 @@ export default function WatchesPage() {
           {activeFilters.length > 0 && (
             <div className="mt-3 flex flex-wrap items-center gap-2">
               {activeFilters.map((f) => (
-                <span
-                  key={f}
-                  className="inline-flex items-center gap-1 rounded-full border border-zinc-300 bg-white px-2.5 py-1 text-[12px] font-medium text-zinc-700"
-                >
+                <span key={f} className="inline-flex items-center gap-1 rounded-full border border-zinc-300 bg-white px-2.5 py-1 text-[12px] font-medium text-zinc-700">
                   {f}
                   <button
                     onClick={() => {
@@ -164,20 +176,88 @@ export default function WatchesPage() {
 
       {/* Grid */}
       <div className="mx-auto max-w-7xl px-5 py-8 sm:px-8 lg:px-10">
-        {filtered.length === 0 ? (
+        {loading ? (
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {[...Array(6)].map((_, i) => (
+              <div key={i} className="rounded-2xl border border-zinc-200 overflow-hidden animate-pulse">
+                <div className="aspect-[4/3] bg-zinc-100" />
+                <div className="p-4 space-y-2">
+                  <div className="h-3 w-16 bg-zinc-100 rounded" />
+                  <div className="h-4 w-32 bg-zinc-100 rounded" />
+                  <div className="h-3 w-24 bg-zinc-100 rounded" />
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : filtered.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-28 text-center">
             <div className="text-5xl mb-5 text-zinc-200">⌚</div>
             <h3 className="text-lg font-semibold text-black">No watches found</h3>
             <p className="mt-2 text-zinc-500 text-sm">Try adjusting your filters.</p>
-            <Button variant="outline" className="mt-5" onClick={resetAll}>
-              Reset filters
-            </Button>
+            <Button variant="outline" className="mt-5" onClick={resetAll}>Reset filters</Button>
           </div>
         ) : (
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {filtered.map((watch) => (
-              <WatchCard key={watch.id} watch={watch} />
-            ))}
+            {filtered.map((watch) => {
+              const isAvailable = watch.status === 'active'
+              const photos = watch.photos as string[] | null
+              return (
+                <Link
+                  key={watch.id as string}
+                  href={`/watches/${watch.id}`}
+                  className={`group block bg-white rounded-2xl border border-zinc-200 overflow-hidden hover:border-zinc-300 hover:shadow-sm transition-all ${!isAvailable ? 'opacity-60' : ''}`}
+                >
+                  <div className="relative aspect-[4/3] overflow-hidden bg-zinc-100">
+                    {photos?.[0] ? (
+                      <Image
+                        src={photos[0]}
+                        alt={`${watch.brand} ${watch.model}`}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-500"
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                      />
+                    ) : (
+                      <div className="flex h-full items-center justify-center text-5xl text-zinc-300">⌚</div>
+                    )}
+                    <div className="absolute inset-x-0 top-0 flex items-start justify-between p-3">
+                      {!isAvailable && (
+                        <span className="rounded-full bg-zinc-800/80 px-2 py-0.5 text-[10px] font-medium text-white">Rented</span>
+                      )}
+                      {isAvailable && <span />}
+                      {Boolean(watch.is_authenticated) && (
+                        <span className="inline-flex items-center gap-1 rounded-full bg-black/80 px-2 py-0.5 text-[10px] font-medium text-white">
+                          <ShieldCheck size={9} /> Verified
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                  <div className="p-4">
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="min-w-0">
+                        <p className="text-[11px] font-semibold tracking-widest uppercase text-zinc-400 truncate">{watch.brand as string}</p>
+                        <h3 className="mt-0.5 text-[15px] font-semibold text-black leading-tight truncate">{watch.model as string}</h3>
+                      </div>
+                      <div className="text-right shrink-0">
+                        <p className="text-[15px] font-bold text-black">{formatCAD(watch.rental_price_30d as number)}</p>
+                        <p className="text-[11px] text-zinc-400">/ 30 days</p>
+                      </div>
+                    </div>
+                    <div className="mt-3 flex items-center justify-between">
+                      <span className="inline-flex items-center gap-1 text-[12px] text-zinc-400">
+                        <MapPin size={11} />{watch.pickup_area as string}
+                      </span>
+                      {watch.rating != null && (
+                        <span className="inline-flex items-center gap-1 text-[12px] text-zinc-500">
+                          <Star size={11} className="text-amber-500 fill-amber-500" />
+                          {Number(watch.rating).toFixed(1)}
+                          <span className="text-zinc-400">({watch.review_count as number})</span>
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </Link>
+              )
+            })}
           </div>
         )}
       </div>
