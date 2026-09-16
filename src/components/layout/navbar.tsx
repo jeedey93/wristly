@@ -75,6 +75,12 @@ export function Navbar() {
               user ? (
                 <>
                   <Link
+                    href="/owner/watches"
+                    className="text-[13px] font-medium text-zinc-500 hover:text-black transition-colors"
+                  >
+                    My collection
+                  </Link>
+                  <Link
                     href="/dashboard/bookings"
                     className="flex items-center gap-1.5 text-[13px] font-medium text-zinc-500 hover:text-black transition-colors"
                   >
@@ -127,6 +133,11 @@ export function Navbar() {
             <div className="mt-3 flex flex-col gap-2 border-t border-zinc-100 pt-3">
               {user ? (
                 <>
+                  <Button variant="outline" size="md" asChild>
+                    <Link href="/owner/watches" onClick={() => setOpen(false)}>
+                      My collection
+                    </Link>
+                  </Button>
                   <Button variant="outline" size="md" asChild>
                     <Link href="/dashboard/bookings" onClick={() => setOpen(false)}>
                       My account
